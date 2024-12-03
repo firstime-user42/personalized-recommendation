@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select, button {
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+        }
+        #recommendation-content {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Get Your Personalized Recommendations</h1>
+
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" name="weight" required>
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" name="height" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="others">others</option>
+        </select>
+
+        <label for="diet">Type of Diet:</label>
+        <select id="diet" name="diet" required>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="non-vegetarian">Non-Vegetarian</option>
+            <option value="vegan">Vegan</option>
+        </select>
+
+        <label for="goal">Purpose of Workout:</label>
+        <select id="goal" name="goal" required>
+            <option value="weight_loss">Weight Loss</option>
+            <option value="muscle_gain">Muscle Gain</option>
+            <option value="general_fitness">General Fitness</option>
+        </select>
+
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    <div id="recommendation-content">
+        <!-- Recommendations will be displayed here -->
+    </div>
+
+    <script>
+        const form = document.getElementById('userForm');
+        const contentDiv = document.getElementById('recommendation-content');
+
+        const generateRecommendations = (data) => {
+            const recommendations = {};
+
+            if (data.goal === "weight_loss") {
+                recommendations.diet = "Focus on low-calorie, nutrient-dense foods such as leafy greens, lean protein, and whole grains.";
+                recommendations.timing = "Eat smaller, balanced meals every 3-4 hours.";
+                recommendations.workout = "Engage in high-intensity interval training (HIIT) 3-4 times a week and add regular cardio sessions.";
+            } else if (data.goal === "muscle_gain") {
+                recommendations.diet = "Include high-protein foods such as chicken, fish, tofu, lentils, and whole grains.";
+                recommendations.timing = "Eat protein-rich meals every 3-4 hours, especially post-workout.";
+                recommendations.workout = "Focus on strength training exercises like deadlifts, squats, and bench presses 4-5 times a week.";
+            } else {
+                recommendations.diet = "Maintain a balanced diet with adequate portions of vegetables, fruits, proteins, and whole grains.";
+                recommendations.timing = "Stick to three balanced meals and light snacks in between.";
+                recommendations.workout = "Incorporate light exercises like yoga, pilates, or brisk walking 4-5 times a week.";
+            }
+
+            return recommendations;
+        };
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const userData = {
+                name: formData.get('name'),
+                age: formData.get('age'),
+                weight: formData.get('weight'),
+                height: formData.get('height'),
+                gender: formData.get('gender'),
+                diet: formData.get('diet'),
+                goal: formData.get('goal')
+            };
+
+            const recommendations = generateRecommendations(userData);
+
+            contentDiv.innerHTML = `
+                <p><strong>Name:</strong> ${userData.name}</p>
+                <p><strong>Diet Recommendation:</strong> ${recommendations.diet}</p>
+                <p><strong>Meal Timing:</strong> ${recommendations.timing}</p>
+                <p><strong>Workout Recommendation:</strong> ${recommendations.workout}</p>
+            `;
+        });
+    </script>
+</body>
+</html>
